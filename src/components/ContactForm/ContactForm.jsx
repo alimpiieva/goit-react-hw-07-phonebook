@@ -26,7 +26,7 @@ const ContactForm = () => {
 
     try {
       setIsAdding(true);
-      dispatch(addContact({ id: nanoid(), name: name, phone: phone }));
+      await dispatch(addContact({ id: nanoid(), name: name, phone: phone }));
       setName('');
       setPhone('');
     } catch (error) {
@@ -67,7 +67,7 @@ const ContactForm = () => {
           onChange={handleChange}
         />
       </div>
-     <SubmitButton type="submit" disabled={isAdding || isLoading}>
+      <SubmitButton type="submit" disabled={isAdding || isLoading}>
         {isAdding ? 'Adding...' : 'Add contact'}
       </SubmitButton>
     </LabelForm>
