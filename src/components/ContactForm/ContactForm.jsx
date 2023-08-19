@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { LabelForm, Label, InputField, SubmitButton } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../redux/slice';
-import { nanoid } from 'nanoid';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -10,30 +9,25 @@ const ContactForm = () => {
   const [isAdding, setIsAdding] = useState(false);
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.contacts.isLoading);
-  const contacts = useSelector(state => state.contacts.items);
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
     if (name.trim() === '' || phone.trim() === '') {
       alert('Please provide both name and phone.');
       return;
     }
 
-    if (contacts.some(contact => contact.name === name || contact.phone === phone)) {
-      alert('Contact with the same name or phone already exists.');
-      return;
-    }
-
-    try {
-      setIsAdding(true);
-      await dispatch(addContact({ id: nanoid(), name: name, phone: phone }));
-      setName('');
-      setPhone('');
-    } catch (error) {
-      alert('An error occurred while adding the contact.');
-    } finally {
-      setIsAdding(false);
-    }
+    setIsAdding(true);
+    dispatch(addContact({ name: name, phone: phone }))
+      .then(() => {
+        setName('');
+        setPhone('');
+        setIsAdding(false); 
+      })
+      .catch(error => {
+        alert('An error occurred while adding the contact.');
+        setIsAdding(false);
+      });
   };
 
   const handleChange = e => {
