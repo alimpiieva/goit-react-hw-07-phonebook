@@ -9,6 +9,8 @@ const ContactForm = () => {
   const [isAdding, setIsAdding] = useState(false);
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.contacts.isLoading);
+  const contacts = useSelector(state => state.contacts.items);
+
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -17,6 +19,10 @@ const ContactForm = () => {
       return;
     }
 
+    if (contacts.some(contact => contact.name === name || contact.phone === phone)) {
+      alert('Contact with the same name or phone already exists.');
+      return;
+    }
     setIsAdding(true);
     dispatch(addContact({ name: name, phone: phone }))
       .then(() => {

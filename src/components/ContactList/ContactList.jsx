@@ -9,11 +9,17 @@ const ContactList = () => {
   const dispatch = useDispatch();
   const [deletingContactId, setDeletingContactId] = useState(null);
 
-  const handleDeleteContact = async contactId => {
+  const handleDeleteContact = contactId => {
     setDeletingContactId(contactId);
-    await dispatch(deleteContact(contactId));
-    dispatch(fetchContacts());
-    setDeletingContactId(null);
+    dispatch(deleteContact(contactId))
+      .then(() => {
+        dispatch(fetchContacts());
+        setDeletingContactId(null);
+      })
+      .catch(error => {
+        console.log('An error occurred while deleting the contact.');
+        setDeletingContactId(null);
+      });
   };
 
   return (
