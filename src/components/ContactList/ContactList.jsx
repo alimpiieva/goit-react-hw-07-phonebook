@@ -17,7 +17,7 @@ const ContactList = () => {
         setDeletingContactId(null);
       })
       .catch(error => {
-        console.log('An error occurred while deleting the contact.');
+        console.log('An error occurred while deleting the contact.', error);
         setDeletingContactId(null);
       });
   };
